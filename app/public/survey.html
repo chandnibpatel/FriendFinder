@@ -182,7 +182,7 @@
             <img id="match-img" src="https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/6/005/064/1bd/3435aa3.jpg" alt="">
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="closeBtn" >Close</button>
           </div>
         </div>
 
@@ -194,10 +194,15 @@
 
   <script type="text/javascript">
 
+  //redirecting to the home page
+  document.getElementById("closeBtn").onclick = function () {
+        document.location.href="/";
+  };
+
   // Capture the form inputs
   $("#submit").on("click", function(event) {
       event.preventDefault();
-
+      var validUrl=false;
       // Form validation
       function validateForm() {
         var isValid = true;
@@ -207,6 +212,18 @@
           }
         });
 
+        //Image Validation
+        var url = $("#photo").val();
+        validUrl = /^(ftp|http|https):\/\/[^ "]+$/.test(url);
+        
+        if (validUrl)
+          console.log(url);
+        else
+        {
+          isValid = false;
+        }
+
+        //selected options validation
         $(".chosen-select").each(function() {
 
           if ($(this).val() === "") {
@@ -249,7 +266,10 @@
         });
       }
       else {
-          alert("Please fill out all fields before submitting!");
+          if(validUrl)
+             alert("Please fill out all fields before submitting!");
+          else
+            alert("Please enter valid photo URL!");
       }
     });
 
